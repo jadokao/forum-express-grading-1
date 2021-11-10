@@ -3,6 +3,7 @@ const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Restaurant = db.Restaurant
+const User = db.User
 
 const adminController = {
   getRestaurants: (req, res) => {
@@ -116,6 +117,36 @@ const adminController = {
       restaurant.destroy().then(restaurant => {
         res.redirect('/admin/restaurants')
       })
+    })
+  },
+
+  getUsers: (req, res) => {
+    return User.findAll({ raw: true }).then(users => {
+      for (let i = 0; i <= users.length - 1; i++) {
+        users[i]['isAdmin'] === 0 || users[i]['isAdmin'] === false
+          ? ((users[i]['isAdmin'] = 'user'), (users[i]['changeRole'] = 'set as Admin'))
+          : ((users[i]['isAdmin'] = 'admin'), (users[i]['changeRole'] = 'set as User'))
+      }
+
+      return res.render('admin/users', { users })
+    })
+  },
+
+  toggleAdmin: (req, res) => {
+    return User.findByPk(req.params.id).then(user => {
+      if (user.isAdmin === true || user.isAdmin === 1) {
+        req.flash('error_messages', '禁止變更管理者權限')
+        res.redirect('back')
+        // user.update({ isAdmin: 0 }).then(user => {
+        //   req.flash('success_messages', 'user was successfully to update')
+        //   res.redirect('/admin/users')
+        // })
+      } else {
+        user.update({ isAdmin: true }).then(user => {
+          req.flash('success_messages', '使用者權限變更成功')
+          res.redirect('/admin/users')
+        })
+      }
     })
   }
 }
