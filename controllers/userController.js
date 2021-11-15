@@ -58,6 +58,7 @@ const userController = {
 
     const userData = {}
     User.findByPk(req.params.id, { raw: true }).then(user => {
+      userData.id = user.id
       userData.name = user.name
       userData.email = user.email
       userData.image = user.image
