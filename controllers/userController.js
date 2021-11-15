@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs')
+const fs = require('fs')
 const db = require('../models')
 const User = db.User
+const helpers = require('../_helpers')
 
 const userController = {
   signUpPage: (req, res) => {
@@ -45,6 +47,56 @@ const userController = {
     req.flash('success_messages', '登出成功！')
     req.logout()
     res.redirect('/signin')
+  },
+
+  getUser: (req, res) => {
+    return User.findByPk(req.params.id).then(user => {
+      res.render('profile', { user: user.toJSON() })
+    })
+  },
+
+  editUser: (req, res) => {
+    return User.findByPk(req.params.id, { raw: true }).then(user => {
+      res.render('edit', { user })
+    })
+  },
+
+  putUser: (req, res) => {
+    if (!req.body.name || !req.body.email) {
+      req.flash('error_messages', "name or email didn't exist")
+      return res.redirect('back')
+    }
+
+    const { file } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
+
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return User.findByPk(req.params.id).then(user => {
+            user
+              .update({
+                name: req.body.name,
+                email: req.body.email,
+                image: file ? `/upload/${file.originalname}` : user.image
+              })
+              .then(user => {
+                req.flash('success_messages', '使用者資料編輯成功')
+
+                return res.redirect(`/users/${req.params.id}`)
+              })
+          })
+        })
+      })
+    } else {
+      return User.findByPk(req.params.id).then(user => {
+        user.update({ name: req.body.name, email: req.body.email, image: user.image }).then(user => {
+          req.flash('success_messages', '使用者資料編輯成功')
+
+          return res.redirect(`/users/${req.params.id}`)
+        })
+      })
+    }
   }
 }
 
