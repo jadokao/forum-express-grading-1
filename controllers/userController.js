@@ -70,7 +70,7 @@ const userController = {
         ...r.dataValues.Restaurant.dataValues
       }))
       console.log(restaurantData)
-      res.render('profile', { user: userData, count: result.count, restaurant: restaurantData })
+      res.render('profile', { user: userData, count: result.count, restaurants: restaurantData })
     })
   },
 
