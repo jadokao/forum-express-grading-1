@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs')
 const fs = require('fs')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 const helpers = require('../_helpers')
 
 const userController = {
@@ -50,8 +52,25 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    return User.findByPk(req.params.id).then(user => {
-      res.render('profile', { user: user.toJSON() })
+    // 篩選Comment的依據：Comment裡面的UserId
+    const whereQuery = {}
+    whereQuery.UserId = req.params.id
+
+    const userData = {}
+    User.findByPk(req.params.id, { raw: true }).then(user => {
+      userData.name = user.name
+      userData.email = user.email
+      userData.image = user.image
+    })
+
+    // include >> 提取跟Comment所連結的table：Restaurant
+    return Comment.findAndCountAll({ include: [Restaurant], where: whereQuery }).then(result => {
+      // 把餐廳資料形成一個個object，放進Array之中
+      const restaurantData = result.rows.map(r => ({
+        ...r.dataValues.Restaurant.dataValues
+      }))
+      console.log(restaurantData)
+      res.render('profile', { user: userData, count: result.count, restaurant: restaurantData })
     })
   },
 
