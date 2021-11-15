@@ -7,6 +7,7 @@ module.exports = {
       'Users',
       [
         {
+          id: 1,
           email: 'root@example.com',
           password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
           isAdmin: true,
@@ -15,6 +16,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
+          id: 2,
           email: 'user1@example.com',
           password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
           isAdmin: false,
@@ -23,6 +25,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
+          id: 3,
           email: 'user2@example.com',
           password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
           isAdmin: false,
