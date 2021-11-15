@@ -141,12 +141,6 @@ const adminController = {
 
   getUsers: (req, res) => {
     return User.findAll({ raw: true }).then(users => {
-      for (let i = 0; i <= users.length - 1; i++) {
-        users[i]['isAdmin'] === 0 || users[i]['isAdmin'] === false
-          ? ((users[i]['isAdmin'] = 'user'), (users[i]['changeRole'] = 'set as Admin'))
-          : ((users[i]['isAdmin'] = 'admin'), (users[i]['changeRole'] = 'set as User'))
-      }
-
       return res.render('admin/users', { users })
     })
   },

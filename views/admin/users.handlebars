@@ -23,10 +23,10 @@
       <th scope="row">{{this.id}}</th>
       <td>{{this.name}}</td>
       <td>{{this.email}}</td>
-      <td>{{this.isAdmin}}</td>
+      <td>{{#showRole this.isAdmin}}{{/showRole}}</td>
       <td>
         <form action="/admin/users/{{this.id}}/toggleAdmin?_method=PUT" method="post">
-          <button type="submit" class="btn btn-link">{{this.changeRole}}</button>
+          <button type="submit" class="btn btn-link">{{#changeRole this.isAdmin}}{{/changeRole}}</button>
         </form>
       </td>
     </tr>
