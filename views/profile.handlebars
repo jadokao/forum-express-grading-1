@@ -3,24 +3,77 @@
     <img class="img-responsive center-block" src="{{user.image}}" style="width: 250px;margin-bottom: 25px;">
   </div>
   <div class="col-md-8">
-    <p>{{user.name}}</p>
+    <h4>{{user.name}}</></h4>
     <p>{{user.email}}</p>
-    <p>{{count}}已評論的餐廳</p>
+    <p><strong>{{commentCount}}</strong> 已評論餐廳</p>
+    <p><strong>{{FavoriteCount}}</strong> 收藏的餐廳</p>
+    <p><strong>{{FollowingsCount}}</strong> followings (追蹤者)</p>
+    <p><strong>{{FollowersCount}}</strong> followers (追蹤者)</p>
     <br>
     {{#if user.isUser}}
       <a href="/users/{{user.id}}/edit" class="btn btn-primary">edit</a>
+    {{else}}
+      {{#if isFollowed}}
+        <form action="/following/{{user.id}}?_method=DELETE" method="POST" style="display: contents;">
+          <button type="submit" class="btn btn-danger btn-sm">取消追蹤</button>
+        </form>
+      {{else}}
+        <form action="/following/{{user.id}}" method="POST" style="display: contents;">
+          <button type="submit" class="btn btn-primary btn-sm">追蹤</button>
+        </form>
+      {{/if}}
     {{/if}}
   </div>
 </div>
-<div class="card">
-  <div class="card-header">
-    {{count}}已評論的餐廳
+<div class="row">
+  <div class="col-5">
+    <div class="card">
+      <div class="card-header">
+        <strong>{{FollowingsCount}}</strong> followings（追蹤者）
+      </div>
+      <div class="card-body d-flex">
+        {{#each followings}}
+          <img src="{{this.dataValues.image}}" alt="" style="width: 100px;margin-right: 25px;">
+        {{/each}}
+      </div>
+    </div>
   </div>
-  <div class="card-body d-flex">
-    {{#each restaurants}}
-      <a href="/restaurants/{{this.id}}">
-        <img src="{{this.image}}" alt="" style="width: 100px;margin-right: 25px;">
-      </a>
-    {{/each}}
+  <div class="col-7">
+    <div class="card">
+      <div class="card-header">
+        <strong>{{commentCount}}</strong> 已評論餐廳
+      </div>
+      <div class="card-body d-flex">
+        {{#each commentRestaurant}}
+          <img src="{{this.image}}" alt="" style="width: 100px;margin-right: 25px;">
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-5">
+    <div class="card">
+      <div class="card-header">
+        <strong>{{FollowersCount}}</strong> followers（追隨者）
+      </div>
+      <div class="card-body d-flex">
+        {{#each followers}}
+          <img src="{{this.dataValues.image}}" alt="" style="width: 100px;margin-right: 25px;">
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  <div class="col-7">
+    <div class="card">
+      <div class="card-header">
+        <strong>{{FavoriteCount}}</strong> 收藏的餐廳
+      </div>
+      <div class="card-body d-flex">
+        {{#each favoriteRestaurant}}
+          <img src="{{this.dataValues.image}}" alt="" style="width: 100px;margin-right: 25px;">
+        {{/each}}
+      </div>
+    </div>
   </div>
 </div>
