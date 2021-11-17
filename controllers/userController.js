@@ -65,6 +65,7 @@ const userController = {
       userData.name = user.name
       userData.email = user.email
       userData.image = user.image
+      userData.isUser = req.user.id === Number(req.params.id)
     })
 
     // include >> 提取跟Comment所連結的table：Restaurant
@@ -73,18 +74,21 @@ const userController = {
       const restaurantData = result.rows.map(r => ({
         ...r.dataValues.Restaurant.dataValues
       }))
-      console.log(restaurantData)
       res.render('profile', { user: userData, count: result.count, restaurants: restaurantData })
     })
   },
 
   editUser: (req, res) => {
+    if (req.user.id !== Number(req.params.id)) return res.redirect('back')
+
     return User.findByPk(req.params.id, { raw: true }).then(user => {
       res.render('edit', { user })
     })
   },
 
   putUser: (req, res) => {
+    if (req.user.id !== Number(req.params.id)) return res.redirect('back')
+
     if (!req.body.name || !req.body.email) {
       req.flash('error_messages', "name or email didn't exist")
       return res.redirect('back')
