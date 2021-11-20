@@ -1,3 +1,4 @@
+const { replaceSetter } = require('sinon')
 const db = require('../../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
@@ -13,6 +14,12 @@ const adminController = {
 
   getRestaurant: (req, res) => {
     adminService.getRestaurant(req, res, data => {
+      return res.json(data)
+    })
+  },
+
+  deleteRestaurant: (req, res) => {
+    adminService.deleteRestaurant(req, res, data => {
       return res.json(data)
     })
   }
