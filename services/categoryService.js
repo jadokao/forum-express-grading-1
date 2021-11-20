@@ -25,7 +25,7 @@ const categoryController = {
       return callback({ status: 'error', message: "name didn't exist" })
     } else {
       return Category.create({ name: req.body.name }).then(category => {
-        return callback({ status: 'success', message: '' })
+        return callback({ status: 'success', message: '', categoryId: category.id })
       })
     }
   },
@@ -36,7 +36,7 @@ const categoryController = {
     } else {
       return Category.findByPk(req.params.id).then(category => {
         category.update(req.body).then(category => {
-          return callback({ status: 'success', message: '' })
+          return callback({ status: 'success', message: '', categoryId: category.id })
         })
       })
     }

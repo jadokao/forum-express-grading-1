@@ -33,7 +33,7 @@ let categoryController = {
   deleteCategory: (req, res) => {
     categoryService.deleteCategory(req, res, data => {
       if (data.status === 'success') {
-        res.redirect('/admin/categories')
+        return res.redirect('/admin/categories')
       }
     })
   }
