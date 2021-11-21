@@ -197,7 +197,7 @@ const userService = {
     })
   },
 
-  removeFollowing: (req, res) => {
+  removeFollowing: (req, res, callback) => {
     return Followship.findOne({
       where: {
         followerId: req.user.id,
@@ -205,7 +205,7 @@ const userService = {
       }
     }).then(followship => {
       followship.destroy().then(followship => {
-        return res.redirect('back')
+        return callback({ status: 'success', message: '' })
       })
     })
   }
