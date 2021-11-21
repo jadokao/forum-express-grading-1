@@ -85,11 +85,8 @@ const userController = {
   },
 
   addLike: async (req, res) => {
-    return Like.create({
-      UserId: helpers.getUser(req).id,
-      RestaurantId: req.params.restaurantId
-    }).then(like => {
-      return res.redirect('back')
+    userService.addLike(req, res, data => {
+      if (data.status === 'success') return res.redirect('back')
     })
   },
 

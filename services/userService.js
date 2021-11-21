@@ -156,12 +156,12 @@ const userService = {
     }).then(() => callback({ status: 'success', message: '' }))
   },
 
-  addLike: async (req, res) => {
+  addLike: async (req, res, callback) => {
     return Like.create({
       UserId: helpers.getUser(req).id,
       RestaurantId: req.params.restaurantId
     }).then(like => {
-      return res.redirect('back')
+      return callback({ status: 'success', message: '' })
     })
   },
 

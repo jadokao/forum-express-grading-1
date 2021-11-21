@@ -49,6 +49,12 @@ const userController = {
     userService.removeFavorite(req, res, data => {
       return res.json(data)
     })
+  },
+
+  addLike: (req, res) => {
+    userService.addLike(req, res, data => {
+      return res.json(data)
+    })
   }
 }
 
