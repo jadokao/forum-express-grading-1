@@ -31,8 +31,14 @@ const userController = {
   },
 
   signIn: (req, res) => {
-    req.flash('success_messages', '成功登入！')
-    res.redirect('/restaurants')
+    userService.signIn(req, res, data => {
+      if (data.status === 'error') {
+        req.flash('error_messages', data.message)
+        return res.redirect('/signin')
+      }
+      req.flash('success_messages', data.message)
+      return res.redirect('/restaurants')
+    })
   },
 
   logout: (req, res) => {
