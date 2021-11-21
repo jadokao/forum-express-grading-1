@@ -5,6 +5,12 @@ const commentController = {
     commentService.postComment(req, res, data => {
       return res.json(data)
     })
+  },
+
+  deleteComment: (req, res) => {
+    commentService.deleteComment(req, res, data => {
+      return res.json(data)
+    })
   }
 }
 

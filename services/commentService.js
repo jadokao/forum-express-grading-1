@@ -12,10 +12,10 @@ const commentService = {
     })
   },
 
-  deleteComment: (req, res) => {
+  deleteComment: (req, res, callback) => {
     return Comment.findByPk(req.params.id).then(comment => {
       comment.destroy().then(comment => {
-        res.redirect(`/restaurants/${comment.RestaurantId}`)
+        return callback({ comment, status: 'success', message: '' })
       })
     })
   }
