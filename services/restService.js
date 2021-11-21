@@ -118,7 +118,7 @@ const restService = {
     })
   },
 
-  getTopRestaurant: (req, res) => {
+  getTopRestaurant: (req, res, callback) => {
     return Restaurant.findAll({
       include: [{ model: User, as: 'FavoritedUsers' }]
     }).then(result => {
@@ -131,7 +131,7 @@ const restService = {
         }))
         .sort((a, b) => b.favoritedCount - a.favoritedCount)
         .slice(0, 10)
-      return res.render('topRestaurants', { restaurants })
+      return callback({ restaurants })
     })
   }
 }

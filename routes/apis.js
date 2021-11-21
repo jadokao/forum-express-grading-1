@@ -25,6 +25,7 @@ const authenticatedAdmin = (req, res, next) => {
 router.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
 router.get('/restaurants', authenticated, restController.getRestaurants)
 router.get('/restaurants/feeds', authenticated, restController.getFeeds)
+router.get('/restaurants/top', authenticated, restController.getTopRestaurant)
 
 router.get('/admin/restaurants', authenticated, authenticatedAdmin, adminController.getRestaurants)
 router.get('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.getRestaurant)

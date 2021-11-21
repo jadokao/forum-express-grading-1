@@ -16,6 +16,12 @@ const restController = {
     restService.getFeeds(req, res, data => {
       return res.json(data)
     })
+  },
+
+  getTopRestaurant: (req, res) => {
+    restService.getTopRestaurant(req, res, data => {
+      return res.json(data)
+    })
   }
 }
 
