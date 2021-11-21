@@ -67,12 +67,10 @@ const userService = {
     })
   },
 
-  getUser: async (req, res) => {
-    // 篩選Comment的依據：Comment裡面的UserId
+  getUser: async (req, res, callback) => {
     const whereQuery = {}
     whereQuery.UserId = req.params.id
 
-    // 取得User的資料，包含favorite, following, follower資料
     let user = await User.findByPk(req.params.id, {
       include: [
         { model: User, as: 'Followers', attributes: ['image', 'id'] },
@@ -84,7 +82,6 @@ const userService = {
 
     const isFollowed = user.Followers.map(d => d.id).includes(req.user.id)
 
-    // 已評論的餐廳
     const commentData = await Comment.findAndCountAll({ include: [Restaurant], where: whereQuery })
     const restaurantData = commentData.rows
       .map(r => ({
@@ -92,7 +89,7 @@ const userService = {
       }))
       .filter((now, index, array) => array.findIndex(target => target.id === now.id) === index)
 
-    return res.render('profile', {
+    return callback({
       user: user.toJSON(),
       isFollowed,
       commentRestaurant: restaurantData,
