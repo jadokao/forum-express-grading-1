@@ -103,11 +103,8 @@ const userController = {
   },
 
   addFollowing: (req, res) => {
-    return Followship.create({
-      followerId: req.user.id,
-      followingId: req.params.userId
-    }).then(followship => {
-      return res.redirect('back')
+    userService.addFollowing(req, res, data => {
+      if (data.status === 'success') return res.redirect('back')
     })
   },
 

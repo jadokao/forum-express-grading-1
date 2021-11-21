@@ -188,12 +188,12 @@ const userService = {
     })
   },
 
-  addFollowing: (req, res) => {
+  addFollowing: (req, res, callback) => {
     return Followship.create({
       followerId: req.user.id,
       followingId: req.params.userId
     }).then(followship => {
-      return res.redirect('back')
+      return callback({ status: 'success', message: '' })
     })
   },
 
