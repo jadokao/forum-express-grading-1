@@ -1,44 +1,44 @@
 const bcrypt = require('bcryptjs')
 const fs = require('fs')
+const jwt = require('jsonwebtoken')
+const passportJWT = require('passport-jwt')
+const ExtractJwt = passportJWT.ExtractJwt
+const JwtStrategy = passportJWT.Strategy
+
 const db = require('../models')
-const userService = require('../services/userService')
 const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
 const Like = db.Like
 const Followship = db.Followship
+
 const helpers = require('../_helpers')
 
-const userController = {
-  signUpPage: (req, res) => {
-    return res.render('signup')
-  },
-
-  signUp: (req, res) => {
-    userService.signUp(req, res, data => {
-      if (data.status === 'error') {
-        req.flash('error_messages', data.message)
-        return res.redirect('/signup')
-      }
-      req.flash('success_messages', data.message)
-      return res.redirect('/signin')
-    })
-  },
-
-  signInPage: (req, res) => {
-    return res.render('signin')
+const userService = {
+  signUp: (req, res, callback) => {
+    if (req.body.passwordCheck !== req.body.password) {
+      return callback({ status: 'error', message: '兩次密碼輸入不同！' })
+    } else {
+      User.findOne({ where: { email: req.body.email } }).then(user => {
+        if (user) {
+          return callback({ status: 'error', message: '信箱重複！' })
+        } else {
+          User.create({
+            name: req.body.name,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
+          }).then(user => {
+            return callback({ status: 'success', message: '成功註冊帳號！' })
+          })
+        }
+      })
+    }
   },
 
   signIn: (req, res) => {
     req.flash('success_messages', '成功登入！')
     res.redirect('/restaurants')
-  },
-
-  logout: (req, res) => {
-    req.flash('success_messages', '登出成功！')
-    req.logout()
-    res.redirect('/signin')
   },
 
   getUser: async (req, res) => {
@@ -202,4 +202,4 @@ const userController = {
   }
 }
 
-module.exports = userController
+module.exports = userService
