@@ -55,7 +55,7 @@ const userService = {
       const token = jwt.sign(payload, process.env.JWT_SECRET)
       return callback({
         status: 'success',
-        message: 'ok',
+        message: '登入成功',
         token: token,
         user: {
           id: user.id,
@@ -111,12 +111,11 @@ const userService = {
     })
   },
 
-  putUser: (req, res) => {
-    if (req.user.id !== Number(req.params.id)) return res.redirect('back')
+  putUser: (req, res, callback) => {
+    if (req.user.id !== Number(req.params.id)) return callback({ status: 'error', message: '' })
 
     if (!req.body.name || !req.body.email) {
-      req.flash('error_messages', "name or email didn't exist")
-      return res.redirect('back')
+      return callback({ status: 'error', message: "name or email didn't exist" })
     }
 
     const { file } = req
@@ -133,9 +132,7 @@ const userService = {
                 image: file ? `/upload/${file.originalname}` : user.image
               })
               .then(user => {
-                req.flash('success_messages', '使用者資料編輯成功')
-
-                return res.redirect(`/users/${req.params.id}`)
+                return callback({ status: 'success', message: '使用者資料編輯成功' })
               })
           })
         })
@@ -143,9 +140,7 @@ const userService = {
     } else {
       return User.findByPk(req.params.id).then(user => {
         user.update({ name: req.body.name, email: req.body.email, image: user.image }).then(user => {
-          req.flash('success_messages', '使用者資料編輯成功')
-
-          return res.redirect(`/users/${req.params.id}`)
+          return callback({ status: 'success', message: '使用者資料編輯成功' })
         })
       })
     }
