@@ -79,7 +79,7 @@ const restService = {
     })
   },
 
-  getFeeds: (req, res) => {
+  getFeeds: (req, res, callback) => {
     return Promise.all([
       Restaurant.findAll({
         limit: 10,
@@ -96,7 +96,7 @@ const restService = {
         include: [User, Restaurant]
       })
     ]).then(([restaurants, comments]) => {
-      return res.render('feeds', {
+      return callback({
         restaurants: restaurants,
         comments: comments
       })
