@@ -62,6 +62,9 @@ router.put(
 )
 router.delete('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.deleteRestaurant)
 
+router.get('/admin/users', authenticated, authenticatedAdmin, adminController.getUsers)
+router.put('/admin/users/:id/toggleAdmin', authenticated, authenticatedAdmin, adminController.toggleAdmin)
+
 router.get('/admin/categories', authenticated, authenticatedAdmin, categoryController.getCategories)
 router.post('/admin/categories', authenticated, authenticatedAdmin, categoryController.postCategory)
 router.put('/admin/categories/:id', authenticated, authenticatedAdmin, categoryController.putCategory)

@@ -4,6 +4,7 @@ const imgur = require('imgur-node-api')
 const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
+const User = db.User
 
 const adminService = {
   getRestaurants: (req, res, callback) => {
@@ -103,6 +104,30 @@ const adminService = {
       restaurant.destroy().then(restaurant => {
         callback({ status: 'success', message: '' })
       })
+    })
+  },
+
+  getUsers: (req, res, callback) => {
+    return User.findAll({ raw: true }).then(users => {
+      return callback({ users })
+    })
+  },
+
+  toggleAdmin: (req, res, callback) => {
+    return User.findByPk(req.params.id).then(user => {
+      if (user.isAdmin === 1) {
+        if (user.email === 'root@example.com') {
+          return callback({ status: 'error', message: '禁止變更管理者權限' })
+        } else {
+          user.update({ isAdmin: 0 }).then(user => {
+            return callback({ status: 'success', message: '使用者權限變更成功' })
+          })
+        }
+      } else {
+        user.update({ isAdmin: 1 }).then(user => {
+          return callback({ status: 'success', message: '使用者權限變更成功' })
+        })
+      }
     })
   }
 }
