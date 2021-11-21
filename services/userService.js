@@ -138,14 +138,15 @@ const userService = {
     }
   },
 
-  addFavorite: (req, res) => {
+  addFavorite: (req, res, callback) => {
     return Favorite.create({
       UserId: req.user.id,
       RestaurantId: req.params.restaurantId
     }).then(restaurant => {
-      return res.redirect('back')
+      return callback({ status: 'success', message: '' })
     })
   },
+
   removeFavorite: (req, res) => {
     return Favorite.destroy({
       where: {
