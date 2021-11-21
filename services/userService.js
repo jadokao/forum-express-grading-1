@@ -103,14 +103,6 @@ const userService = {
     })
   },
 
-  editUser: (req, res) => {
-    if (req.user.id !== Number(req.params.id)) return res.redirect('back')
-
-    return User.findByPk(req.params.id, { raw: true }).then(user => {
-      res.render('edit', { user })
-    })
-  },
-
   putUser: (req, res, callback) => {
     if (req.user.id !== Number(req.params.id)) return callback({ status: 'error', message: '' })
 
