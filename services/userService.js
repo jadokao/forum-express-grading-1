@@ -147,13 +147,13 @@ const userService = {
     })
   },
 
-  removeFavorite: (req, res) => {
+  removeFavorite: (req, res, callback) => {
     return Favorite.destroy({
       where: {
         UserId: req.user.id,
         RestaurantId: req.params.restaurantId
       }
-    }).then(() => res.redirect('back'))
+    }).then(() => callback({ status: 'success', message: '' }))
   },
 
   addLike: async (req, res) => {

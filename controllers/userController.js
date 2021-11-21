@@ -79,12 +79,9 @@ const userController = {
   },
 
   removeFavorite: (req, res) => {
-    return Favorite.destroy({
-      where: {
-        UserId: req.user.id,
-        RestaurantId: req.params.restaurantId
-      }
-    }).then(() => res.redirect('back'))
+    userService.removeFavorite(req, res, data => {
+      if (data.status === 'success') return res.redirect('back')
+    })
   },
 
   addLike: async (req, res) => {
