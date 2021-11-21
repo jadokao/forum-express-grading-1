@@ -17,23 +17,8 @@ const restController = {
   },
 
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {
-      include: [
-        Category,
-        { model: User, as: 'FavoritedUsers' },
-        { model: User, as: 'LikedUsers' },
-        { model: Comment, include: [User] }
-      ]
-    }).then(restaurant => {
-      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
-      const isLiked = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
-      restaurant.increment('viewCounts')
-
-      return res.render('restaurant', {
-        restaurant: restaurant.toJSON(),
-        isFavorited: isFavorited,
-        isLiked: isLiked
-      })
+    restService.getRestaurant(req, res, data => {
+      return res.render('restaurant', data)
     })
   },
 
