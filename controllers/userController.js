@@ -91,12 +91,9 @@ const userController = {
   },
 
   removeLike: (req, res) => {
-    return Like.destroy({
-      where: {
-        UserId: helpers.getUser(req).id,
-        RestaurantId: req.params.restaurantId
-      }
-    }).then(like => res.redirect('back'))
+    userService.removeLike(req, res, data => {
+      if (data.status === 'success') return res.redirect('back')
+    })
   },
 
   getTopUser: (req, res) => {

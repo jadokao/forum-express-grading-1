@@ -165,13 +165,13 @@ const userService = {
     })
   },
 
-  removeLike: (req, res) => {
+  removeLike: (req, res, callback) => {
     return Like.destroy({
       where: {
         UserId: helpers.getUser(req).id,
         RestaurantId: req.params.restaurantId
       }
-    }).then(like => res.redirect('back'))
+    }).then(like => callback({ status: 'success', message: '' }))
   },
 
   getTopUser: (req, res, callback) => {
