@@ -103,7 +103,7 @@ const restService = {
     })
   },
 
-  getDashBoard: async (req, res) => {
+  getDashBoard: async (req, res, callback) => {
     const whereQuery = {}
     whereQuery.RestaurantId = req.params.id
 
@@ -114,7 +114,7 @@ const restService = {
       })
     ]).then(([comments, restaurant]) => {
       const commentNumber = comments.count
-      res.render('dashboard', { restaurant: restaurant.toJSON(), commentNumber })
+      return callback({ restaurant: restaurant.toJSON(), commentNumber })
     })
   },
 
