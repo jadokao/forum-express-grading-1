@@ -1,13 +1,4 @@
-const db = require('../models')
-const Restaurant = db.Restaurant
-const Category = db.Category
-const Comment = db.Comment
-const User = db.User
-const helpers = require('../_helpers')
-
 const restService = require('../services/restService')
-
-const pageLimit = 10
 
 const restController = {
   getRestaurants: (req, res) => {
@@ -40,4 +31,5 @@ const restController = {
     })
   }
 }
+
 module.exports = restController

@@ -104,7 +104,7 @@ const userService = {
   },
 
   putUser: (req, res, callback) => {
-    if (req.user.id !== Number(req.params.id)) return callback({ status: 'error', message: '' })
+    if (req.user.id !== Number(req.params.id)) return callback({ status: 'error', message: 'permission denied' })
 
     if (!req.body.name || !req.body.email) {
       return callback({ status: 'error', message: "name or email didn't exist" })
