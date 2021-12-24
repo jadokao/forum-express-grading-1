@@ -31,6 +31,13 @@
 - 網站管理者可以在後台管理餐廳的基本資料
 - 網站管理者可以在後台管理餐廳分類
 ---
+## 預覽
+![login](forum1.png)
+<br>
+![list](forum2.PNG)
+<br>
+![back](forum3.PNG)
+---
 ## 具有哪些內容？
 * 資料庫
   * config/config.js：設定對應本機SQL的username, password與database名稱
